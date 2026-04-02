@@ -36,7 +36,7 @@ jobs:
      #This one is basically just validating that the repo exsists
 
      - name: Cache Unity Library
-       uses: actions/cache@3
+       uses: actions/cache@v3
        with:
          path: Library
          key: Library-WebGL-${{ hashFiles('SponderBird/Assets/**','SponderBird/Packages/**','SponderBird/ProjectSettings/**')}}
