@@ -1,0 +1,115 @@
+#YAML, which it is the file to adjust the push of the pipeline
+
+#In here, do not TAB, this breaks the code, to indent use spaces (2 average)
+
+name: Build and Deploy Unity WebGL
+
+#Here we are telling that when this is puished into MAIN, it will correctly dispatch
+on:
+  push:
+    branches:
+    - main
+  workflow_dispatch:
+
+
+#Syntaxt for variables
+concurrency:
+  group: ${{ github.workflow }} -${{ github.ref }}
+  cancel-in-progress: true
+
+#Here we are calling the actual action, which is matched to the name - our name is build in this case
+jobs:
+  build:
+    name: Build Unity WebGL
+    runs-on: ubuntu-latest
+
+    #this is kinda the return, where the elements are returned from the steps element
+    outputs:
+     artifact-name: ${{ steps.set-artifact-name.outputs.name }}
+
+    #This is kinda like an array, or more like a dictionary with a name and an action
+    steps:
+     - name: Checkout repository
+       uses: actions/checkout@v4
+       with:
+         lfs: true
+     #This one is basically just validating that the repo exsists
+
+     - name: Cache Unity Library
+       uses: actions/cache@3
+       with:
+         path: Library
+         key: Library-WebGL-${{ hasFiles('SponderBird/Assets/**','SponderBird/Packages/**','SponderBird/ProjectSettings/**')}}
+         restore-keys: |
+          Library-WebGL-
+          Library-
+         
+     #This is a check for validating that all the stuff is in place to see if it is rebuilded inside it. This one will a check and fallbacks if it fails
+
+     - name: Build Unity WebGL
+       uses: game-ci/Unity-builder@v4
+       env:
+         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+       with:
+         projectPath: .
+         targetPlatform: WebGL
+         buildPath: builds
+
+      #This one access the game-ci which helps with the license and secret management inside github
+
+     - name: Debug output structure
+       run: find builds/ -type f | sort
+       #This one in linux command line it gives the location of the build
+
+
+     - name: Set artifact name
+       id: set-artifact-name
+       run: echo "name=WebGL-Build-${{ github.sha }}" >> $GITUB_OUTPUT
+       #This one set the artifact name (which is the total of the data we are uploading to github)
+
+
+     - name: Upload WebGL Build
+       uses: actions/upload-artifact@v4
+       with:
+         name: ${{ steps.set-artifact-name.outputs.name }}
+         path: Builds/WebGL/WebGL
+         retention-days: 7
+       #This one will create the folder if it not exsist, unless it does and still bind it
+         
+   
+  #Second part of the devops, which requieres the before build
+  deploy:
+    name: Deploy to Github Pages
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+
+    steps:
+      - name: Download WebGL Build
+        uses: actions/download-artifact@v4
+        with: 
+          name: ${{ needs.build.outputs.artifact-name }}
+          path: ./game
+      
+      - name: Upload to Github Pages artifact store
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./game
+
+      - name: Deploy to Github Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Print deploy URL
+        run: |
+         echo "Game is live at"
+         echo "${{ steps.deploy.outputs.page_url }}"
