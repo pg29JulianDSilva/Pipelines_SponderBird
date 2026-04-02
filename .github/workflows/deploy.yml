@@ -66,7 +66,7 @@ jobs:
 
      - name: Set artifact name
        id: set-artifact-name
-       run: echo "name=WebGL-Build-${{ github.sha }}" >> $GITUB_OUTPUT
+       run: echo "name=WebGL-Build-${{ github.sha }}" >> $GITHUB_OUTPUT
        #This one set the artifact name (which is the total of the data we are uploading to github)
 
 
