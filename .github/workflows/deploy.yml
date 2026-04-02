@@ -39,7 +39,7 @@ jobs:
        uses: actions/cache@3
        with:
          path: Library
-         key: Library-WebGL-${{ hasFiles('SponderBird/Assets/**','SponderBird/Packages/**','SponderBird/ProjectSettings/**')}}
+         key: Library-WebGL-${{ hashFiles('SponderBird/Assets/**','SponderBird/Packages/**','SponderBird/ProjectSettings/**')}}
          restore-keys: |
           Library-WebGL-
           Library-
