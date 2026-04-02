@@ -55,7 +55,7 @@ jobs:
        with:
          projectPath: .
          targetPlatform: WebGL
-         buildPath: builds
+         buildsPath: builds
 
       #This one access the game-ci which helps with the license and secret management inside github
 
