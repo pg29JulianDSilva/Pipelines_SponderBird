@@ -45,7 +45,8 @@ public class FirebaseManager : MonoBehaviour
         Debug.Log($"Auth Received: {json}");
 
         var data = JsonUtility.FromJson<AuthPayLoad>(json);
-        UserId = data.idToken;
+        UserId = data.uid;
+        IdToken = data.idToken;
         DisplayName = data.displayName;
         ProjectId = data.projectId;
         IsAuthenticated = !string.IsNullOrEmpty(UserId) && !string.IsNullOrEmpty(data.idToken);
