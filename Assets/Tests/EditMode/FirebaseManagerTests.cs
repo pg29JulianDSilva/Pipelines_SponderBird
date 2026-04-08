@@ -99,6 +99,44 @@ public class FirebaseManagerTests
         Assert.AreEqual("beetle-ball", firebaseManager.ProjectId);
     }
 
+    [Test]
+    public void OnAuthRecieved_EmptyToken_IsNotAuthenticated()
+    {
+        string json = BuildAuthJson("1234", "", "x", "proj");
+        firebaseManager.OnAuthReceived(json);
+        Assert.IsFalse(firebaseManager.IsAuthenticated);
+    }
+
+    [Test]
+    public void OnAuthRecieved_CalledTwice_OverwritesFirstAuth()
+    {
+        string json1 = BuildAuthJson("1234", "token_1234", "Sponder", "beetle-ball");
+        string json2 = BuildAuthJson("4321", "token_4231", "Spencer", "bug-sphere");
+
+        firebaseManager.OnAuthReceived(json1);
+        firebaseManager.OnAuthReceived(json2);
+
+        Assert.AreEqual("4321", firebaseManager.UserId);
+        Assert.AreEqual("Spencer", firebaseManager.DisplayName);
+    }
+
+    [Test]
+    public void SubmitScore_WhereNotAuthenticated_DoesNotThrow()
+    {
+        string json = BuildAuthJson("1234", "token_1234", "Sponder", "beetle-ball");
+        firebaseManager.OnAuthReceived(json);
+        //This one will activate when thsi one gives us an error. We uses the anonymous function to avoid breaking and giving us false instead
+        Assert.DoesNotThrow(() => firebaseManager.SubmitScore(10, 10, 30));
+    }
+
+    [Test]
+    public void Singleton_IsSetAfterAwake()
+    {
+        Assert.AreEqual(firebaseManager, FirebaseManager.Instance);
+    }
+
+
+
     private string BuildAuthJson(string uid, string idToken, string displayName, string projectId)
     {
         return $"{{\"uid\":\"{uid}\",\"idToken\":\"{idToken}\",\"displayName\":\"{displayName}\",\"projectId\":\"{projectId}\"}}";
