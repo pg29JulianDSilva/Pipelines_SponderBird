@@ -1,6 +1,6 @@
 var FirebaseBridgeLib = {
     InitFirebaseBridge: function () { //This will be from the browser window, to let to keep everything from the background to run without problem
-        if (!winbdow.__fbAuth) {
+        if (!window.__fbAuth) {
             window.__fbAuth = { uid: null, idToken: null, displayName: null, projectId: null }
         }
 
