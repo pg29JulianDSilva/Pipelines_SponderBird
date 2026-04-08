@@ -14,7 +14,7 @@ public class FirebaseManager : MonoBehaviour
     //This one will check that the game it is running in the WebGL and not in the editor (and the else is for the other way arround)
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")] private static extern void InitFirebaseBridge();
-    [DllImport("__Internal")] private static extern void SubmitScoreToFirestore(sting jsonBody);
+    [DllImport("__Internal")] private static extern void SubmitScoreToFirestore(string jsonBody);
 
 #else
 
