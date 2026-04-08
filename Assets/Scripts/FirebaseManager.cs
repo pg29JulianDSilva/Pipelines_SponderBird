@@ -35,6 +35,11 @@ public class FirebaseManager : MonoBehaviour
         Instance = this;
     }
 
+    private void Start()
+    {
+        InitFirebaseBridge();
+    }
+
     public void OnAuthReceived(string json)
     {
         Debug.Log($"Auth Received: {json}");
