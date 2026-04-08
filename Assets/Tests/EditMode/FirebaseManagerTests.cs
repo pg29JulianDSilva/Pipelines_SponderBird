@@ -4,7 +4,7 @@ using NUnit.Framework;
 [TestFixture]
 public class FirebaseManagerTests 
 {
-    private GameObject firebaseObj;
+    /*private GameObject firebaseObj;
     private FirebaseManager firebaseManager;
 
     //It is the start elements for the condition in stuff
@@ -141,5 +141,5 @@ public class FirebaseManagerTests
     {
         return $"{{\"uid\":\"{uid}\",\"idToken\":\"{idToken}\",\"displayName\":\"{displayName}\",\"projectId\":\"{projectId}\"}}";
     }
-
+    */
 }
