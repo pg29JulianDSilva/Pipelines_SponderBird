@@ -12,7 +12,7 @@ var FirebaseBridgeLib = {
             window.__fbAuth.projectId = data.projectId || "";
 
             var payload = JSON.stringify(window.__fbAuth);
-            SandMessage("FirebaseManager", "OnAuthRecieved", payload);
+            SandMessage("GameManager", "OnAuthRecieved", payload);
 
             if (window.parent && window.parent !== window) {
                 window.parent.postMessage({ type: "firebase-auth-ack" }, "*");
@@ -36,7 +36,7 @@ var FirebaseBridgeLib = {
         //This one will allow us to re login when starting the game
         if (window.__fbAuth && window.__fbAuth.uid && window.__fbAuth.idToken) {
             var payload = JSON.stringify(window.__fbAuth);
-            SendMessage("FirebaseManager", "OnAuthRecieved", payload);
+            SendMessage("GameManager", "OnAuthRecieved", payload);
         }
 
     },
@@ -52,7 +52,7 @@ var FirebaseBridgeLib = {
         }
 
         //This is to access the firestore auth stuff
-        var baseUrl = "https://firestore.googleapis.com/v1/projects" + auth.projectId + "/databases(default)/documents";
+        var baseUrl = "https://firestore.googleapis.com/v1/projects/" + auth.projectId + "/databases(default)/documents";
 
         var headers = {
             "Content-Type": "application/json",
@@ -75,7 +75,7 @@ var FirebaseBridgeLib = {
         })
             .then(function (res) { return res.json(); })
             .then(function (data) { console.log("Score saved:", data.name); })
-            .catch(function (err) { console.error("Score POST failed", err); })
+            .catch(function (e) { console.error("Score POST failed", e); })
 
         var userDocUrl = baseUrl + "/users/" + auth.uid;
 
