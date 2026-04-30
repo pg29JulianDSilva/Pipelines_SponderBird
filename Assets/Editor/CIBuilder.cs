@@ -51,7 +51,7 @@ public class CIBuilder
         }
         catch (Exception ex)
         {
-            Debug.Log($"Criticall error {ex.Message}");
+            Debug.Log($"Critical error {ex.Message}");
         }
     }
 }

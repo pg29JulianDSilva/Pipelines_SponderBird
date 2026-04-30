@@ -64,7 +64,7 @@ public class FirebaseManager : MonoBehaviour
 
         var payload = new ScorePyaload
         {
-            socre = score,
+            score = score,
             pipes = pipes,
             duration = duration
         };
@@ -85,7 +85,7 @@ public class FirebaseManager : MonoBehaviour
     [System.Serializable]
     private class ScorePyaload
     {
-        public int socre;
+        public int score;
         public int pipes;
         public int duration;
     }

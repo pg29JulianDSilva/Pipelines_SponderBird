@@ -12,7 +12,7 @@ var FirebaseBridgeLib = {
             window.__fbAuth.projectId = data.projectId || "";
 
             var payload = JSON.stringify(window.__fbAuth);
-            SandMessage("GameManager", "OnAuthRecieved", payload);
+            SendMessage("GameManager", "OnAuthReceived", payload);
 
             if (window.parent && window.parent !== window) {
                 window.parent.postMessage({ type: "firebase-auth-ack" }, "*");
@@ -36,7 +36,7 @@ var FirebaseBridgeLib = {
         //This one will allow us to re login when starting the game
         if (window.__fbAuth && window.__fbAuth.uid && window.__fbAuth.idToken) {
             var payload = JSON.stringify(window.__fbAuth);
-            SendMessage("GameManager", "OnAuthRecieved", payload);
+            SendMessage("GameManager", "OnAuthReceived", payload);
         }
 
     },
@@ -61,7 +61,7 @@ var FirebaseBridgeLib = {
 
         var scoreDoc = {
             fields: {
-                userId: { striingValue: auth.uid },
+                userId: { stringValue: auth.uid },
                 score: { integerValue: String(parsed.score) },
                 pipes: { integerValue: String(parsed.duration) },
                 timestamp: { timestampValue: new Date().toISOString() }
