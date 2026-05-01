@@ -89,7 +89,7 @@ var FirebaseBridgeLib = {
                 var currentGames = 0;
 
                 if (doc.fields) {
-                    if (doc.fields.highScore) currentHigh = parseInt(doc.fields.highScore.integerValue || "");
+                    if (doc.fields.highScore) currentHigh = parseInt(doc.fields.highScore.integerValue || "0");
                     if (doc.fields.gamesPlayed) currentGames = parseInt(doc.fields.gamesPlayed.integerValue || "0");
                 }
 
