@@ -52,7 +52,7 @@ var FirebaseBridgeLib = {
         }
 
         //This is to access the firestore auth stuff
-        var baseUrl = "https://firestore.googleapis.com/v1/projects/" + auth.projectId + "/databases(default)/documents";
+        var baseUrl = "https://firestore.googleapis.com/v1/projects/" + auth.projectId + "/databases/(default)/documents";
 
         var headers = {
             "Content-Type": "application/json",
