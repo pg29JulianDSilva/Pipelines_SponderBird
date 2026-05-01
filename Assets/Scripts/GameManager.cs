@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
     public enum GameState { Idle, Playing, GameOver }
     public GameState State { get; private set; } = GameState.Idle;
 
